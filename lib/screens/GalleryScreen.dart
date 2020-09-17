@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_gallery/Theme.dart';
 import 'package:flutter_gallery/api/PhotoAPI.dart';
 import 'package:flutter_gallery/components/ListItem.dart';
 import 'package:flutter_gallery/models/PhotoModel.dart';
@@ -19,7 +20,14 @@ class GalleryScreenState extends State<GalleryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Gallery')),
+        appBar: AppBar(
+          title: Text('Gallery'),
+          actions: [
+            IconButton(
+                icon: MyTheme().getIcon(),
+                onPressed: () => MyTheme().switchTheme())
+          ],
+        ),
         body: ListView.separated(
             itemCount: _photoList.length,
             separatorBuilder: (context, index) => Divider(),
