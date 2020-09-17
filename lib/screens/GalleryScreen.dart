@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class GalleryScreen extends StatefulWidget {
 class GalleryScreenState extends State<GalleryScreen> {
   List<PhotoModel> _photoList = [];
   int _currentPage = 2;
+  String _response;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class GalleryScreenState extends State<GalleryScreen> {
           actions: [
             IconButton(
                 icon: MyTheme().getIcon(),
-                onPressed: () => MyTheme().switchTheme())
+                onPressed: () => MyTheme().switchTheme()),
           ],
         ),
         body: ListView.separated(
@@ -56,13 +58,26 @@ class GalleryScreenState extends State<GalleryScreen> {
   }
 
   getPhotos({int page = 1}) async {
-    String response = await PhotoAPI.getPhotos(page: page);
-    _photoList.addAll(decodeResponse(response));
+    _response = await PhotoAPI.getPhotos(page: page)
+        .catchError((onError) => startPeriodicRequest(page));
+    _photoList.addAll(decodeResponse(_response));
     setState(() {});
   }
 
   transitionToPhotoScreen(String srcPhoto) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => PhotoScreen(srcPhoto)));
+  }
+
+  startPeriodicRequest(int page) {
+    Timer.periodic(Duration(milliseconds: 5000), (timer) async {
+      _response = await PhotoAPI.getPhotos(page: page)
+          .then((response) {
+            timer.cancel();
+            return response;
+          });
+      _photoList.addAll(decodeResponse(_response));
+      setState(() {});
+    });
   }
 }

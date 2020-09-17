@@ -10,39 +10,73 @@ class ListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         child: Container(
-      height: 150,
-      child: Row(
+      padding: EdgeInsets.all(10.0),
+      height: 400,
+      child: Column(
         children: [
-          Image.network(_photoModel.thumbUrl),
-          ListItemTextBox(_photoModel.authorName, _photoModel.altDescription)
+          TitleItem(_photoModel.profileImage, _photoModel.authorName),
+          Expanded(
+              flex: 8,
+              child: Container(
+                margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                child: Image.network(_photoModel.thumbUrl, fit: BoxFit.fill),
+              )),
+          BottomItem(_photoModel.altDescription)
         ],
       ),
     ));
   }
 }
 
-class ListItemTextBox extends StatelessWidget {
+
+class TitleItem extends StatelessWidget {
+  final String _profileImage;
   final String _authorName;
+
+  TitleItem(this._profileImage, this._authorName);
+
+  Widget build(BuildContext context) {
+    return Expanded(
+        flex: 1,
+        child: Row(
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 10.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.network(_profileImage),
+              ),
+            ),
+            Text(
+              _authorName != null
+                  ? _authorName
+                  : '',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            )
+          ],
+        ));
+  }
+}
+
+class BottomItem extends StatelessWidget {
   final String _altDescription;
-
-  ListItemTextBox(this._authorName, this._altDescription);
-
+  
+  BottomItem(this._altDescription);
+  
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: Container(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Text(
-                  _authorName != null ? _authorName : '',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  _altDescription != null ? _altDescription : '',
-                  softWrap: true,
-                )
-              ],
-            )));
+      flex: 2,
+      child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+              _altDescription != null
+                  ? _altDescription
+                  : '',
+              softWrap: true,
+              style: TextStyle(
+                fontSize: 17,
+              ))),
+    );
   }
 }

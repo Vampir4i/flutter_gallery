@@ -5,9 +5,10 @@ class PhotoModel {
   final String fullUrl;
   final String thumbUrl;
   final String authorName;
+  final String profileImage;
 
   PhotoModel(this.id, this.description, this.altDescription, this.fullUrl,
-      this.thumbUrl, this.authorName);
+      this.thumbUrl, this.authorName, this.profileImage);
 
   factory PhotoModel.fromJson(Map<String, dynamic> json) {
     return PhotoModel(
@@ -16,7 +17,8 @@ class PhotoModel {
         json['alt_description'] as String,
         json['urls']['full'] as String,
         json['urls']['thumb'] as String,
-        json['user']['name'] as String
+        json['user']['name'] as String,
+        json['user']['profile_image']['small'] as String
     );
   }
 }
