@@ -28,7 +28,6 @@ class ListItem extends StatelessWidget {
   }
 }
 
-
 class TitleItem extends StatelessWidget {
   final String _profileImage;
   final String _authorName;
@@ -48,9 +47,7 @@ class TitleItem extends StatelessWidget {
               ),
             ),
             Text(
-              _authorName != null
-                  ? _authorName
-                  : '',
+              _authorName != null ? _authorName : '',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             )
           ],
@@ -60,19 +57,16 @@ class TitleItem extends StatelessWidget {
 
 class BottomItem extends StatelessWidget {
   final String _altDescription;
-  
+
   BottomItem(this._altDescription);
-  
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
       flex: 2,
       child: Align(
           alignment: Alignment.centerLeft,
-          child: Text(
-              _altDescription != null
-                  ? _altDescription
-                  : '',
+          child: Text(_altDescription != null ? _altDescription : '',
               softWrap: true,
               style: TextStyle(
                 fontSize: 17,

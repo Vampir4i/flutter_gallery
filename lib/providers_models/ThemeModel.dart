@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MyTheme with ChangeNotifier {
+class ThemeModel with ChangeNotifier {
   SharedPreferences _sharedPreferences;
-  static MyTheme myTheme;
+  static ThemeModel _myTheme;
   static bool _isDark = false;
 
-  MyTheme.basic() {
-    _getValue();
+  ThemeModel.primary() {
+    _readTheme();
   }
 
-  factory MyTheme() {
-    if(myTheme == null) myTheme = MyTheme.basic();
-    return myTheme;
+  factory ThemeModel() {
+    if(_myTheme == null) _myTheme = ThemeModel.primary();
+    return _myTheme;
   }
 
   ThemeMode currentTheme() {
@@ -25,17 +25,17 @@ class MyTheme with ChangeNotifier {
 
   void switchTheme() {
     _isDark = !_isDark;
-    _setValue(_isDark);
+    _writeTheme(_isDark);
     notifyListeners();
   }
 
-  void _getValue() async {
+  void _readTheme() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _isDark = _sharedPreferences.getBool("isDark") ?? false;
     notifyListeners();
   }
 
-  void _setValue(bool isDark) async {
+  void _writeTheme(bool isDark) async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _sharedPreferences.setBool("isDark", isDark);
   }

@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gallery/Theme.dart';
+import 'package:flutter_gallery/providers_models/GalleryModel.dart';
+import 'package:flutter_gallery/providers_models/ThemeModel.dart';
 import 'package:flutter_gallery/screens/GalleryScreen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<ThemeModel>(create: (context) => ThemeModel()),
+      ChangeNotifierProvider<GalleryModel>(create: (context) => GalleryModel())
+    ],
+    child: MyApp(),
+  ));
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => MyAppState();
-}
-
-class MyAppState extends State<MyApp> {
-
-  @override
-  void initState() {
-    super.initState();
-    MyTheme().addListener(() {
-      setState((){});
-    });
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,7 +22,7 @@ class MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      themeMode: MyTheme().currentTheme(),
+      themeMode: Provider.of<ThemeModel>(context).currentTheme(),
       home: GalleryScreen(),
     );
   }
